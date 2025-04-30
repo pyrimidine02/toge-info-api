@@ -1,0 +1,83 @@
+plugins {
+	id 'org.jetbrains.kotlin.jvm' version '1.9.25'
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.25'
+	id 'org.springframework.boot' version '3.3.9'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.9.25'
+}
+
+group = 'org.pyrimidines'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom(annotationProcessor)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	// Spring Boot Starter for JPA와 Web
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+
+	// Jackson Kotlin Module 및 Kotlin 관련 의존성
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("mysql:mysql-connector-java:8.0.33")
+
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
+
+
+
+	// MySQL Connector/J (MySQL 사용)
+	runtimeOnly("mysql:mysql-connector-java")
+
+	// Lombok (필요 시, Kotlin 사용 시 꼭 필요하지 않을 수 있음)
+	compileOnly("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok")
+
+	// 개발 도구
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+	// 테스트 의존성
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("org.springframework.security:spring-security-test")
+	runtimeOnly("mysql:mysql-connector-java:8.0.33")
+
+}
+
+kotlin {
+	compilerOptions {
+		freeCompilerArgs.add("-Xjsr305=strict")
+	}
+}
+
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Embeddable")
+}
+
+tasks.named("test") {
+	useJUnitPlatform()
+}
+
+bootRun {
+	jvmArgs += ["-Dfile.encoding=UTF-8"]
+}
+
+jar {
+	enabled = false
+}

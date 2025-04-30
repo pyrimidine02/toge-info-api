@@ -1,0 +1,46 @@
+erDiagram
+    CHARACTERS {
+        int id PK
+        string name
+        string japaneseName
+        date birthday
+        string birthplace
+        double height
+        string blood_type
+        string favorite_food
+        string hobby
+        string affiliation
+        string position
+        string voice_actor
+    }
+    PLACE {
+        int id PK
+        string title
+        string description
+        double lat
+        double lng
+        string region
+    }
+    EPISODE {
+        int id PK
+        string title
+        string description
+    }
+    PLACE_IMAGE {
+        int id PK
+        string imageUrl
+        int displayOrder
+        string caption
+        int place_id
+    }
+
+    APPEARANCE {
+        int place_id PK
+        int episode_id PK
+        int character_id PK
+    }
+
+    PLACE ||--o{ PLACE_IMAGE : "has"
+    PLACE ||--o{ APPEARANCE : "has"
+    EPISODE ||--o{ APPEARANCE : "has"
+    CHARACTERS ||--o{ APPEARANCE : "appears in"
